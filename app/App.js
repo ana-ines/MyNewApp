@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
-import {render} from 'react-dom';
+import ReactDom from 'react-dom';
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
+import routes from './config/routes';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <h1>
-          Welcome to the react starter.
-        </h1>
-      </div>
-    );
-  }
-}
+ReactDom.render(
+  <Router>{routes}</Router>
+  , document.getElementById('app')
+)
 
-render(<App />, document.getElementById('root'));
