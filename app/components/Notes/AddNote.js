@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import Notes from './Notes.js';
 
 class AddNote extends React.Component {
 
-  setTef(ref) {
+  setRef(ref) {
     this.note = ref;
   }
 
@@ -15,18 +16,18 @@ class AddNote extends React.Component {
   render() {
     return (
       <div className="input-group">
-        <input type="text" className="form-control" placeholder="Add new note" ref={this.setRef}/>
+        <input type="text" className="form-control" placeholder="Add new note" ref={(ref) => this.setRef(ref)}/>
         <span className="input-group-btn">
-          <button className="btn btn-success" type="button" onClick={this.handleSubmit}>
+          <button className="btn btn-success" type="button" onClick={() => this.handleSubmit()}>
             Submit
           </button>
         </span>
       </div>
-    );
+    )
   }
 }
 
-Repos.propTypes = {
+AddNote.propTypes = {
   username: React.PropTypes.string.isRequired,
   addNote: React.PropTypes.func.isRequired
 };

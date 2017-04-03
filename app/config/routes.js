@@ -9,7 +9,7 @@ import Profile from '../components/Profile.js';
 
 export default (
   <Router history={history} path="/" component={Main} >
+    <Route path="/profile/:username" component={Profile}/>
     <IndexRoute component={Home} />
-    <Route path="/profile:username" component={Profile}/>
   </Router>
 );

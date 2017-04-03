@@ -2,19 +2,17 @@ import React, {Component} from 'react';
 import NoteList from './NoteList.js';
 import AddNote from './AddNote.js';
 
-class Notes extends React.Component {
-  render() {
-    return(
-      <div>
-        <h3>Notes for {this.props.username}</h3>
-        <AddNote username={this.props.username} addNote={this.props.AddNote} />
-        <NoteList notes={this.props.notes} />
-      </div>
-    );
-  }
+const Notes = ({username, notes, addNote}) => {
+  return(
+    <div>
+      <h3>Notes for {username}</h3>
+      <AddNote username={username} addNote={addNote} />
+      <NoteList notes={notes} />
+    </div>
+  )
 }
 
-Repos.propTypes = {
+Notes.propTypes = {
   username: React.PropTypes.string.isRequired,
   notes: React.PropTypes.array.isRequired,
   addNote: React.PropTypes.func.isRequired

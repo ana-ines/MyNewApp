@@ -2,51 +2,81 @@ import React from 'react';
 import Repos from './Github/Repos.js';
 import Notes from './Notes/Notes.js';
 import UserProfile from './Github/UserProfile.js';
-import ReactFireMixin from 'reactfire';
-import Firebase from 'firebase';
+import getGithubInfo from './utils/helpers.js';
+import Rebase from 're-base';
+import SearchGithub from './SearchGithub.js';
+
+
+const base = Rebase.createClass({
+  apiKey: "",
+  authDomain: "",
+  databaseURL: 'https://reacttest.firebaseio.com/',
+  storageBucket: ""
+});
 
 class Profile extends React.Component {
-  mixin: [ReactFireMixin]
 
   constructor(props) {
     super(props);
     this.state = {
-      notes: [1, 2, 3],
-      bio: {
-        name: 'Pirulito'
-      },
-      repos: ['a', 'b', 'c']
+      notes: [],
+      bio: {},
+      repos: []
     };
   }
 
+  componenWillReceiveProps(nextProps) {
+    base.removeBinding(this.ref);
+    this.init(nextProps.params.username);
+  }
+
   componentDidMount() {
-    this.ref = new Firebase('https://github-note-taker.firebaseio.com/');
-    var childRef = this.ref.child(this.props.params.username);
-    this.bindAsArray()(childRef, 'notes');
+    this.init(this.props.params.username);
   }
 
   componentWillUnmount() {
-    this.unbind('notes');
+    base.removeBinding(this.ref);
+  }
+  
+  init(username){
+    this.ref = base.bindToState(username, {
+      context: this,
+      asArray: true,
+      state: 'notes'
+    });
+
+    getGithubInfo(username)
+      .then(function(data){
+        this.setState({
+          bio: data.bio,
+          repos: data.repos
+        })
+        console.log(data);
+      }.bind(this))
   }
 
   handleAddNote(newNote) {
-    this.ref.child(this.props.params.username).child(this.state.notes.length).set(newNote)
+    base.post(this.props.params.username, {
+      data: this.state.notes.concat([newNote])
+    })
   }
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-4">
-          <UserProfile username={this.props.params.username} bio={this.state.bio} />
-        </div>
-        <div className="col-md-4">
-          <Repos username={this.props.params.username} repos={this.state.repos} />
-        </div>
-        <div className="col-md-4">
-          <Notes 
-            username={this.props.params.username} 
-            notes={this.state.notes} 
-            addNote={this.handleAddNote}/>
+      <div>
+        <div className="row">
+          <div className="col-md-4">
+            <UserProfile username={this.props.params.username} bio={this.state.bio} />
+          </div>
+          <div className="col-md-4">
+            <Repos username={this.props.params.username} repos={this.state.repos} />
+          </div>
+          <div className="col-md-4">
+            <Notes 
+              username={this.props.params.username} 
+              notes={this.state.notes} 
+              addNote={ (newNote) => this.handleAddNote(newNote) }/>
+          </div>
         </div>
       </div>
     );
