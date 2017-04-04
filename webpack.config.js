@@ -32,6 +32,7 @@ module.exports = {
   plugins: [HTMLWebpackPluginConfig, HotReloader],
   devServer: {
     contentBase: __dirname + '/dist',
+    headers: { "Access-Control-Allow-Origin": "*" },
     hot: true,
   }
 };

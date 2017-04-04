@@ -16,6 +16,7 @@
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.1.18",
     "babel-preset-stage-0": "^6.1.18",
+    "cors": "^2.8.3",
     "firebase": "^2.3.2",
     "history": "^1.17.0",
     "html-webpack-plugin": "^1.6.2",
@@ -34,5 +35,8 @@
       "react",
       "stage-0"
     ]
+  },
+  "devDependencies": {
+    "cors": "^2.8.3"
   }
 }
